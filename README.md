@@ -8,7 +8,9 @@ CSRFImmunity is a NODE JS module to prevent Cross Site Request Forgery issue in 
 
 The module requires two encryption keys to encrypt the csrf token in the form parameter and in the cookie. The keys need be passed to the module while initiating it in your code.
 
-**var csrfi = require(CSRFImmunity).setKeyForEncryption("key1_for_form_parameter", "key2_for_form_data");**
+```
+var csrfi = require(CSRFImmunity).setKeyForEncryption("key1_for_form_parameter", "key2_for_form_data");
+```
 
 The setKeyForEncryption method makes sure that applications uses different and their personal secret keys. You can use one key in both the places, but it is always advised to use two different strong keys.
 
@@ -18,9 +20,11 @@ The setKeyForEncryption method makes sure that applications uses different and t
 
 The above method accepts a JSON object as an argument. The JSON object is then used to generate the CSRF tokens. You can pass anything you need in this JSON object to make the CSRF token specific to certain page, form and user. An example of the options parameter is :
 
-**'{"formname":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak"}'**
+```
+'{"formname":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak"}'
 
-**var csrfTokens = csrfi.generateToken(options);**
+var csrfTokens = csrfi.generateToken(options);
+```
 
 You can always keep the form blank if you want the token to generated only based on random strings, but this will make you tokens more generic.
 
@@ -28,9 +32,11 @@ You can always keep the form blank if you want the token to generated only based
 
 This method also accepts the exact same JSON parameter, but generates a time based CSRF token. You can use this method to generate time based CSRF tokens and then use the varifyTimeBasedToken to validate this CSRF token.
 
-**'{"formname":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak"}'**
+```
+'{"formname":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak"}'
 
-**var csrfTokens = csrfi.generateTimeBasedToken(options);**
+var csrfTokens = csrfi.generateTimeBasedToken(options);
+```
 
 The csrfTokine will somewhat look like :
 
@@ -65,7 +71,7 @@ var csrfTokens = csrfi.generateToken(options);
 
 var optionsForVerification = '{"formname":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak", "milliseconds":"300000"}';
 
-var status = csrfi.verifyToken(optionsForVerification);** (This will return boolean)
+var status = csrfi.verifyToken(optionsForVerification); (This will return boolean)
 ```
 
 ## An overall example for this module
