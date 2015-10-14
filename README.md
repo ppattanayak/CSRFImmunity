@@ -9,7 +9,7 @@ CSRFImmunity is a NODE JS module to prevent Cross Site Request Forgery issue in 
 The module requires two encryption keys to encrypt the csrf token in the form parameter and in the cookie. The keys need be passed to the module while initiating it in your code.
 
 ```
-var csrfi = require(CSRFImmunity).setKeyForEncryption("key1_for_form_parameter", "key2_for_form_data");
+var csrfi = require(csrfimmunity).setKeyForEncryption("key1_for_form_parameter", "key2_for_form_data");
 ```
 
 The setKeyForEncryption method makes sure that applications uses different and their personal secret keys. You can use one key in both the places, but it is always advised to use two different strong keys.
@@ -97,6 +97,7 @@ console.log(statusPlainToken); // This will print the boolean success or failure
 ```
 
 
-## Contact
+## Author
 
-**Email : pattanayak.piyush@gmail.com**
+**Name:** Piyush Pattanayak
+**Email :** pattanayak.piyush@gmail.com
