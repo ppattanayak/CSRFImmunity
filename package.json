@@ -1,0 +1,27 @@
+{
+  "name": "csrfImmunity",
+  "version": "0.1.0",
+  "description": "Protection against Cross Site Request Forgery attacks. This module provides multiple variation of protection.",
+  "main": "csrfImmunity.js",
+  "dependencies": {
+    "randomstring":"^1.1.0",
+    "crypto":"^0.0.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ppattanayak/CSRFImmunity"
+  },
+  "keywords": [
+    "CSRF",
+    "csrf"
+  ],
+  "author": "Piyush Pattanayak <pattanayak.piyush@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ppattanayak/CSRFImmunity/issues"
+  },
+  "homepage": "https://github.com/ppattanayak/CSRFImmunity"
+}
