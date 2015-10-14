@@ -44,11 +44,13 @@ This method is used to verify the CSRF token from the page. It accepts three par
 
 #### Example
 
-**var options = '{"formname":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak"}';
+```
+var options = '{"formname":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak"}';
 
 var csrfTokens = csrfi.generateToken(options);
 
-var status = csrfi.verifyToken(options);** (This will return boolean)
+var status = csrfi.verifyToken(options); (This will return boolean)
+```
 
 ### verifyTimeBasedToken(formToken, cookieToken, options)
 
@@ -56,17 +58,20 @@ This method is used to verify time based CSRF tokens. You have add a extra key v
 
 #### Example
 
-**var options = '{"formname":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak"}';
+```
+var options = '{"formname":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak"}';
 
 var csrfTokens = csrfi.generateToken(options);
 
 var optionsForVerification = '{"formname":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak", "milliseconds":"300000"}';
 
 var status = csrfi.verifyToken(optionsForVerification);** (This will return boolean)
+```
 
 ## An overall example for this module
 
-**var csrf = require('../csrfImmunity').setKeyForEncryption("cdshcjkbdsckdslkclkncd", "cdsbgVDGHJACAJGH");
+```
+var csrf = require('../csrfImmunity').setKeyForEncryption("cdshcjkbdsckdslkclkncd", "cdsbgVDGHJACAJGH");
 
 var options = '{"user":"Piyush Pattanayak", "formname":"loginform"}';
 
@@ -85,6 +90,8 @@ console.log(statusTimeBased); // This will print the boolean success or failure
 
 var statusPlainToken = csrf.verifyToken(plainTokenArray[0], plainTokenArray[1], optionsNew);
 console.log(statusPlainToken); // This will print the boolean success or failure**
+```
+
 
 ## Contact
 
