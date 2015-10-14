@@ -53,9 +53,7 @@ This method is used to verify the CSRF token from the page. It accepts three par
 ```
 var options = '{"formname":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak"}';
 
-var csrfTokens = csrfi.generateToken(options);
-
-var status = csrfi.verifyToken(options); (This will return boolean)
+var status = csrfi.verifyToken(formToken, cookieToken, options); (This will return boolean);
 ```
 
 ### verifyTimeBasedToken(formToken, cookieToken, options)
@@ -71,7 +69,7 @@ var csrfTokens = csrfi.generateToken(options);
 
 var optionsForVerification = '{"formname":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak", "milliseconds":"300000"}';
 
-var status = csrfi.verifyToken(optionsForVerification); (This will return boolean)
+var status = csrfi.verifyToken(formToken, cookieToken, optionsForVerification); (This will return boolean)
 ```
 
 ## An overall example for this module
