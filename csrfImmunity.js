@@ -1,14 +1,15 @@
 var randomstring = require("randomstring"),
     encryptDecrypt = require("./lib/encrypt-decrypt"),
     separator = "###",
-    defaultTimeDiff = 250000,
-    HIDDEN_FORM = 1,
-    COOKIE_TOKEN = 2;
+    defaultTimeDiff = 250000;
 
 
 function isJsonString(str) {
     try {
-        JSON.parse(str);
+        var js = JSON.parse(str);
+        if(Object.keys(js).length < 2){
+          console.warn("CSRFImmunity Module (csrfImmunity.js) : Options parameter is not enough. Application might be risky to CSRF attacks");
+        }
     } catch (e) {
       console.log(e);
       console.log("CSRFImmunity Module (csrfImmunity.js) : Not a valid JSON string, " + str);
@@ -19,12 +20,12 @@ function isJsonString(str) {
 
 module.exports = {
 
-    setKeyForEncryption: function(keyForm, keyCookie){
-      if(keyForm !== "" && keyCookie !== "" && keyForm !== null && keyCookie !== null){
-        encryptDecrypt.setKeyForEncryption(keyForm, keyCookie);
+    setKeyForEncryption: function(key){
+      if(key !== "" && key !== null){
+        encryptDecrypt.setKeyForEncryption(key);
         return this;
       }else{
-        console.log("Key not found. Please provide two encryption keys");
+        console.log("Key not found. Please provide the encryption key");
         return null;
       }
     },
@@ -34,17 +35,14 @@ module.exports = {
       //options needed to generate the csrf token Ex : {"formname":"loginform", formaction="http://www.weekendsecurity.org/submit"}
       options = options || {"null":"null"};
 
+      //Check for valid JSON string
       isJsonString(options);
-      //console.log(formaction);
 
       //Time calculated to check the CSRF token validity
       var milliseconds = (new Date).getTime();
 
       //A random String to pass in the CSRF token and cookie value
       var randomString = randomstring.generate(15);
-
-      //A additional random String to pass in the cookie
-      var randomStringCookie = randomstring.generate(10);
 
       //Converting the options JSON to hexadecimal value
       var optionsBuffer = new Buffer(options);
@@ -52,22 +50,17 @@ module.exports = {
 
       //Collecting all the token parameters for token generations
       var tokenHidden = encodedOptions + separator + randomString + separator + milliseconds;
-      var tokenCookie = randomString + separator + milliseconds + separator + randomStringCookie;
 
-      // Encrypting both the hidden and cookie token
-      var encTokenHidden = encryptDecrypt.encrypt(tokenHidden, HIDDEN_FORM);
-      var encTokenCookie = encryptDecrypt.encrypt(tokenCookie, COOKIE_TOKEN);
+      // Encrypting the CSRF token
+      var token = encryptDecrypt.encrypt(tokenHidden);
 
-      // Final Token separated by ###. First part should be used in hidden field and the second in the cookie
-      var token = encTokenHidden + separator + encTokenCookie;
-
-      return token;  //encTokenHidden###encTokenCookie
+      return token;
     },
 
     generateToken: function(options){
       options = options || {"null":"null"};
-      //console.log(formaction);
 
+      //Check for valid JSON string
       isJsonString(options);
 
       //Time calculated to check the CSRF token validity
@@ -76,51 +69,38 @@ module.exports = {
       //A random String to pass in the CSRF token and cookie value
       var randomString = randomstring.generate(15);
 
-      //A additional random String to pass in the cookie
-      var randomStringCookie = randomstring.generate(10);
-
       //Converting the options JSON to hexadecimal value
       var optionsBuffer = new Buffer(options);
       var encodedOptions = optionsBuffer.toString('hex');
 
       //Collecting all the token parameters for token generations
       var tokenHidden = encodedOptions + separator + randomString;
-      var tokenCookie = randomString + separator + randomStringCookie;
 
-      // Encrypting both the hidden and cookie token
-      var encTokenHidden = encryptDecrypt.encrypt(tokenHidden, HIDDEN_FORM);
-      var encTokenCookie = encryptDecrypt.encrypt(tokenCookie, COOKIE_TOKEN);
+      // Encrypting the CSRF token
+      var token = encryptDecrypt.encrypt(tokenHidden);
 
-      // Final Token separated by ###. First part should be used in hidden field and the second in the cookie
-      var token = encTokenHidden + separator + encTokenCookie;
-
-      return token;  //encTokenHidden###encTokenCookie
+      return token;
     },
 
-    verifyTimeBasedToken: function(csrfToken, cookieValue, options){
+    verifyTimeBasedToken: function(csrfToken, options){
 
       //The options which is used to generate the CSRF token
       options = options || '{"null":"null"}';
 
+      //Check for valid JSON string
       isJsonString(options);
 
       //Need the CSRF token to be passed here for verification
       csrfToken = csrfToken || "";
 
-      //Need the CSRF cookie value to be check against the CSRF token
-      cookieValue = cookieValue || "";
-
       //Return false if the csrfToken and cookieValue are sent null
-      if(csrfToken === "" || cookieValue === ""){
+      if(csrfToken === ""){
         return false;
       }
-      // console.log(csrfToken);
-      // console.log(cookieValue);
 
-      //Decrypting the hidden token and cookie
+      //Decrypting the csrf token
       try{
-        var decTokenHidden = encryptDecrypt.decrypt(csrfToken, HIDDEN_FORM);
-        var decTokenCookie = encryptDecrypt.decrypt(cookieValue, COOKIE_TOKEN);
+        var decTokenHidden = encryptDecrypt.decrypt(csrfToken);
       }catch (e) {
           console.log(e);
           console.log("CSRFImmunity (csrfImmunity.js) : CSRF decryption failed.");
@@ -129,7 +109,6 @@ module.exports = {
 
       //Split the tokens using the separators and store it in an array
       var decTokenHiddenArray = decTokenHidden.split(separator);
-      var decTokenCookieArray = decTokenCookie.split(separator);
 
       //Converting the options in the hidden token to ascii and then into Javascript object
       var optionsBuffer = new Buffer(decTokenHiddenArray[0], 'hex');
@@ -139,13 +118,11 @@ module.exports = {
       //Fetching the time limit of token validity from options parameter.
       var timeDef = optionsjsFromParam.milliseconds || defaultTimeDiff;
 
-      //Verifying if the token from hidden parameter is same as the token form the cookie
+      //Verifying if the CSRF token with time, and options parameter
       try{
-        if(decTokenHiddenArray[1] === decTokenCookieArray[0]){
           var currentMilliseconds = (new Date).getTime();
-          // console.log(currentMilliseconds);
-          // console.log(Number(decTokenCookieArray[1])+ Number(timeDef));
-          if(currentMilliseconds < Number(decTokenCookieArray[1])+ timeDef){
+
+          if(currentMilliseconds < Number(decTokenHiddenArray[2])+ timeDef){
               for (key in optionsjsFromToken) {
                   if(optionsjsFromToken[key] !== optionsjsFromParam[key]){
                     return false;
@@ -155,9 +132,6 @@ module.exports = {
           }else{
             return false;
           }
-        }else{
-          return false;
-        }
       }catch (e){
         console.log(e);
         process.exit();
@@ -165,58 +139,51 @@ module.exports = {
 
     },
 
-    verifyToken: function(csrfToken, cookieValue, options){
+    verifyToken: function(csrfToken, options){
 
           //The options which is used to generate the CSRF token
           options = options || '{"null":"null"}';
 
           isJsonString(options);
-        //  console.log(options);
 
           //Need the CSRF token to be passed here for verification
           csrfToken = csrfToken || "";
 
-          //Need the CSRF cookie value to be check against the CSRF token
-          cookieValue = cookieValue || "";
-
           //Return false if the csrfToken and cookieValue are sent null
-          if(csrfToken === "" || cookieValue === ""){
-        //    console.log(4);
+          if(csrfToken === ""){
             return false;
           }
-          // console.log(csrfToken);
-          // console.log(cookieValue);
 
-          //Decrypting the hidden token and cookie
+          //Decrypting the csrf token
           try{
-            var decTokenHidden = encryptDecrypt.decrypt(csrfToken, HIDDEN_FORM);
-            var decTokenCookie = encryptDecrypt.decrypt(cookieValue, COOKIE_TOKEN);
+            var decTokenHidden = encryptDecrypt.decrypt(csrfToken);
           }catch (e) {
               console.log(e);
               console.log("CSRFImmunity (csrfImmunity.js) : CSRF decryption failed.");
               process.exit();
           }
 
+          //Split the tokens using the separators and store it in an array
           var decTokenHiddenArray = decTokenHidden.split(separator);
-          var decTokenCookieArray = decTokenCookie.split(separator);
 
+          //Converting the options in the hidden token to ascii and then into Javascript object
           var optionsBuffer = new Buffer(decTokenHiddenArray[0], 'hex');
           var optionsjsFromToken = JSON.parse(optionsBuffer.toString('ascii'));
           var optionsjsFromParam = JSON.parse(options);
 
-          if(decTokenHiddenArray[1] === decTokenCookieArray[0]){
+          //Verifying if the CSRF token with time, and options parameter
+          try{
 
             for (key in optionsjsFromToken) {
                 if(optionsjsFromToken[key] !== optionsjsFromParam[key]){
-            //      console.log(1);
                   return false;
                 }
             }
-            return true;
-          }else{
-          //  console.log(3);
-            return false;
+          }catch (e){
+            console.log(e);
+            process.exit();
           }
+          return true;
     }
 
 }

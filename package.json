@@ -1,6 +1,6 @@
 {
   "name": "csrfimmunity",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Protection against Cross Site Request Forgery attacks. This module provides multiple variation of protection.",
   "main": "csrfImmunity.js",
   "dependencies": {
