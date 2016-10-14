@@ -1,14 +1,15 @@
 {
   "name": "csrfimmunity",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Protection against Cross Site Request Forgery attacks. This module provides multiple variation of protection.",
-  "main": "csrfImmunity.js",
+  "main": "index.js",
   "dependencies": {
-    "randomstring":"^1.1.0",
-    "crypto":"^0.0.3"
+    "colors": "^1.1.2",
+    "crypto": "^0.0.3",
+    "randomstring": "^1.1.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "make all"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,15 @@
   "bugs": {
     "url": "https://github.com/ppattanayak/CSRFImmunity/issues"
   },
-  "homepage": "https://github.com/ppattanayak/CSRFImmunity"
+  "homepage": "https://github.com/ppattanayak/CSRFImmunity",
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.5",
+    "jshint": "^2.9.3",
+    "mocha": "^3.1.2"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  }
 }
