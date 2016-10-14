@@ -13,7 +13,7 @@ function isJsonString(str) {
     } catch (e) {
       console.log(e);
       console.log("CSRFImmunity Module (csrfImmunity.js) : Not a valid JSON string, " + str);
-      process.exit(1);
+      throw new Error(e);
     }
     return true;
 }
@@ -104,7 +104,7 @@ module.exports = {
       }catch (e) {
           console.log(e);
           console.log("CSRFImmunity (csrfImmunity.js) : CSRF decryption failed.");
-          process.exit();
+          throw new Error(e);
       }
 
       //Split the tokens using the separators and store it in an array
@@ -134,7 +134,7 @@ module.exports = {
           }
       }catch (e){
         console.log(e);
-        process.exit();
+        throw new Error(e);
       }
 
     },
@@ -160,7 +160,7 @@ module.exports = {
           }catch (e) {
               console.log(e);
               console.log("CSRFImmunity (csrfImmunity.js) : CSRF decryption failed.");
-              process.exit();
+              throw new Error(e);
           }
 
           //Split the tokens using the separators and store it in an array
@@ -181,7 +181,7 @@ module.exports = {
             }
           }catch (e){
             console.log(e);
-            process.exit();
+            throw new Error(e);
           }
           return true;
     }
