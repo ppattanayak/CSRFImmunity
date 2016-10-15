@@ -23,7 +23,9 @@ The above method accepts a JSON object as an argument. The JSON object is then u
 ```
 var options = '{"pagename":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak"}';
 
-var csrfTokens = csrfi.generateToken(options);
+csrfi.generateToken(options, function(csrftoken){
+    // Work with the token here
+});
 ```
 
 Please use a minimum of two parameter in the JSON argument which should be unique as per the user and per page. In the above example the "pagename" parameter is unique to the web page and the "username" parameter is unique to current logged in user.
@@ -35,7 +37,9 @@ This method also accepts the exact same JSON parameter, but generates a time bas
 ```
 var options = '{"pagename":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak"}';
 
-var csrfTokens = csrfi.generateTimeBasedToken(options);
+csrfi.generateTimeBasedToken(options, function(csrftoken){
+    // Work with the token here
+});
 ```
 
 The CSRF Token will somewhat look like :
@@ -65,11 +69,13 @@ This method is used to verify time based CSRF tokens. You need to have add an ex
 ```
 var options = '{"pagename":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak"}';
 
-var csrfTokens = csrfi.generateTimeBasedToken(options);
+csrfi.generateTimeBasedToken(options, function(csrftoken){
+    // Get the CSRF Token
+});
 
 var optionsForVerification = var options = '{"pagename":"login","formaction":"https:\/\/www.weekendsecurity.org", "username":"piyushpattanayak","milliseconds":"300000"}';
 
-var status = csrfi.verifyToken(csrfToken, optionsForVerification); (This will return boolean)
+var status = csrfi.verifyTimeBasedToken(csrfToken, optionsForVerification); (This will return boolean)
 ```
 
 ## An overall example for this module
@@ -79,11 +85,14 @@ var csrf = require('../csrfimmunity').setKeyForEncryption("cdshcjkbdsckdslkclknc
 
 var options = '{"pagename":"login", "username":"piyushpattanayak"}';
 
-var timeBasedToken = csrf.generateTimeBasedToken(options);
-console.log(timeBasedToken); // This will print the time based token
+csrf.generateTimeBasedToken(options, function(timeBasedToken){
+    console.log(timeBasedToken); // This will print the time based token
+});
 
-var plainToken = csrf.generateToken(options);
-console.log(plainToken); // This will print usual token
+csrf.generateToken(options, function(plainToken){
+    console.log(plainToken); // This will print usual token
+});
+
 
 var optionsNew = '{"pagename":"login", "username":"piyushpattanayak", "milliseconds":"3000000"}';
 
