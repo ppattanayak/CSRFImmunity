@@ -1,8 +1,7 @@
-[![Build Status](https://travis-ci.org/ppattanayak/CSRFImmunity.png?branch=master)](https://travis-ci.org/ppattanayak/CSRFImmunity)
-
 # CSRFImmunity
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/ppattanayak/CSRFImmunity.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/ppattanayak/CSRFImmunity.png?branch=master)](https://travis-ci.org/ppattanayak/CSRFImmunity)
 
 ## Description
 
