@@ -2,6 +2,8 @@
 
 # CSRFImmunity
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ppattanayak/CSRFImmunity.svg)](https://greenkeeper.io/)
+
 ## Description
 
 CSRFImmunity is a NODE JS module to prevent Cross Site Request Forgery issue in web applications. This module can be used to generate and validate CSRF tokens. It can also be used to generate token based on various user defined parameters like page name, form action, userid or username and any other parameters the application needs. The module also uses a JSON string to generate the CSRF token which is the most important part of this module, it makes sure that the token is random enough for an user and a page. The application developer needs to make sure that the parameter in the JSON argument is unique for each user and each page.
