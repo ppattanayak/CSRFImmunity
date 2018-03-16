@@ -9,7 +9,9 @@
     "randomstring": "^1.1.0"
   },
   "scripts": {
-    "test": "make all"
+    "test": "make all",
+    "start": "node index.js",
+    "security-check": "nsp check --preprocessor yarn --reporter table"
   },
   "repository": {
     "type": "git",
