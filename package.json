@@ -4,7 +4,7 @@
   "description": "Protection against Cross Site Request Forgery attacks. This module provides multiple variation of protection.",
   "main": "index.js",
   "dependencies": {
-    "colors": "^1.1.2",
+    "colors": "^1.3.3",
     "crypto": "^1.0.1",
     "randomstring": "^1.1.0"
   },
