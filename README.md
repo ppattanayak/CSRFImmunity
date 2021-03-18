@@ -2,6 +2,8 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/ppattanayak/CSRFImmunity.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/ppattanayak/CSRFImmunity.png?branch=master)](https://travis-ci.org/ppattanayak/CSRFImmunity)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/ppattanayak/CSRFImmunity.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ppattanayak/CSRFImmunity/alerts/)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/ppattanayak/CSRFImmunity.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ppattanayak/CSRFImmunity/alerts/)
 
 ## Description
 
